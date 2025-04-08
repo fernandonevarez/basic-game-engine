@@ -1,0 +1,48 @@
+# === CMake build directories ===
+/cmake-build-*/
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# === CLion IDE files ===
+.idea/
+*.iml
+*.user
+*.userprefs
+
+# === Executables and binary files ===
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+
+# === Object files ===
+*.o
+*.obj
+
+# === Logs and debugging files ===
+*.log
+*.stackdump
+*.dSYM/
+
+# === OS-specific garbage ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# === Editor backup/swap files ===
+*~
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# === Unit test output ===
+Testing/
+CTestTest
