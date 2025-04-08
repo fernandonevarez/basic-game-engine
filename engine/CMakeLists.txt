@@ -1,20 +1,30 @@
 find_package(glfw3 REQUIRED)
 
+add_subdirectory(external)
+
 add_library(engine
         src/Engine.cpp
         src/Window.cpp
         src/Renderer.cpp
+        src/Shader.cpp
 )
 
 target_include_directories(engine
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# Link GLFW (already here)
-target_link_libraries(engine PUBLIC glfw)
-
-# macOS OPENGL
+# === macOS-specific OpenGL linking ===
 if (APPLE)
     find_library(OpenGL_LIBRARY OpenGL)
-    target_link_libraries(engine PUBLIC ${OpenGL_LIBRARY})
+    target_link_libraries(engine
+            PUBLIC glad
+            PUBLIC glfw
+            PUBLIC ${OpenGL_LIBRARY}
+    )
+else ()
+    # Fallback for Linux/Windows (if you ever port it later)
+    target_link_libraries(engine
+            PUBLIC glad
+            PUBLIC glfw
+    )
 endif ()

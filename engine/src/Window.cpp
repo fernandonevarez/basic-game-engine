@@ -1,5 +1,6 @@
-#include "engine/Window.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "engine/Window.h"
 #include <iostream>
 
 namespace engine {
@@ -9,21 +10,39 @@ namespace engine {
             std::exit(EXIT_FAILURE);
         }
 
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // required for macOS
+#endif
+
         m_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
         if (!m_window) {
-            std::cerr << "Failed to create GLFW window\n";
+            std::cerr << "[Window] Failed to create GLFW window" << std::endl;
             glfwTerminate();
             std::exit(EXIT_FAILURE);
         }
 
+        glfwMakeContextCurrent(m_window);
+
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+            std::cerr << "[Window] Failed to initialize GLAD" << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+
+        std::cout << "[Window] GLAD initialized successfully" << std::endl;
+
+        // Optional: Print OpenGL version
+        std::cout << "[Window] OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+
         // allows the ability to use the ESC button to quit
         glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int, int action, int) {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
+            }
         });
-
-
-        glfwMakeContextCurrent(m_window);
     }
 
     Window::~Window() {
@@ -39,7 +58,7 @@ namespace engine {
         glfwPollEvents();
     }
 
-    void Window::swapBuffers() {
+    void Window::swapBuffers() const {
         glfwSwapBuffers(m_window);
     }
 }

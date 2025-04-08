@@ -4,20 +4,21 @@
 struct GLFWwindow;
 
 namespace engine {
-
     class Window {
     public:
-        Window(int width, int height, const char* title);
+        Window(int width, int height, const char *title);
+
         ~Window();
 
         bool shouldClose() const;
-        void pollEvents();
-        void swapBuffers();
+
+        static void pollEvents();
+
+        void swapBuffers() const;
 
     private:
-        GLFWwindow* m_window;
+        GLFWwindow *m_window;
     };
-
 }
 
 #endif // ENGINE_WINDOW_H
