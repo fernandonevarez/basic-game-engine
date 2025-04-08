@@ -1,10 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "engine/Window.h"
+#include "engine/Input.h"
 #include <iostream>
 
 namespace engine {
-    Window::Window(int width, int height, const char *title) {
+    Window::Window(const int width, const int height, const char *title): m_window(nullptr) {
         if (!glfwInit()) {
             std::cerr << "Failed to initialize GLFW\n";
             std::exit(EXIT_FAILURE);
@@ -25,6 +26,8 @@ namespace engine {
             std::exit(EXIT_FAILURE);
         }
 
+        Input::setWindow(m_window);
+
         glfwMakeContextCurrent(m_window);
 
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -34,11 +37,10 @@ namespace engine {
 
         std::cout << "[Window] GLAD initialized successfully" << std::endl;
 
-        // Optional: Print OpenGL version
         std::cout << "[Window] OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
         // allows the ability to use the ESC button to quit
-        glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int, int action, int) {
+        glfwSetKeyCallback(m_window, [](GLFWwindow *window, const int key, int, const int action, int) {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, true);
             }

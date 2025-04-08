@@ -12,6 +12,8 @@ namespace engine {
 
         bool shouldClose() const;
 
+        GLFWwindow *getNativeWindow() const { return m_window; }
+
         static void pollEvents();
 
         void swapBuffers() const;
