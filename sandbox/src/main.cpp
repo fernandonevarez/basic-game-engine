@@ -1,6 +1,9 @@
-#include "engine/Engine.h"
+#include "engine.h"
+
 
 int main() {
-    engine::Engine::run();
+    engine::Engine app;
+    app.run();
+
     return 0;
 }
