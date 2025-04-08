@@ -1,10 +1,10 @@
 #include "engine/Engine.h"
+#include "engine/Renderer.h"
 #include <thread>
 #include <chrono>
 
 namespace engine {
-    Engine::Engine() {
-    }
+    Engine::Engine() {}
 
     Engine::~Engine() {
         delete m_window;
@@ -15,6 +15,10 @@ namespace engine {
 
         while (!m_window->shouldClose()) {
             m_window->pollEvents();
+
+            Renderer::clear();
+            Renderer::drawTriangle();
+
             m_window->swapBuffers();
             std::this_thread::sleep_for(std::chrono::milliseconds(16));
         }
