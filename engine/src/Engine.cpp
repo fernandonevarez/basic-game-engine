@@ -1,5 +1,4 @@
 #include "engine/Engine.h"
-#include <iostream>
 #include <thread>
 #include <chrono>
 
@@ -8,9 +7,16 @@ namespace engine {
     }
 
     Engine::~Engine() {
+        delete m_window;
     }
 
     void Engine::run() {
-        std::cout << "Engine is running!" << std::endl;
+        m_window = new Window(800, 600, "Basic Engine");
+
+        while (!m_window->shouldClose()) {
+            m_window->pollEvents();
+            m_window->swapBuffers();
+            std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        }
     }
 }
