@@ -1,14 +1,15 @@
-find_package(glfw3 REQUIRED)
+# Add external dependencies first
+add_subdirectory(external/glm)
 
-find_path(GLM_INCLUDE_DIR glm/glm.hpp)
+# GLFW (comes with its own CMakeLists.txt)
+add_subdirectory(external/glfw)
 
-if (NOT GLM_INCLUDE_DIR)
-    message(FATAL_ERROR "GLM not found")
-endif ()
+# GLAD (we'll define it manually since it's just a C file)
+add_library(glad STATIC external/glad/src/glad.c)
+target_include_directories(glad PUBLIC external/glad/include)
 
-add_subdirectory(external)
-
-add_library(engine
+# Now create the engine library
+add_library(engine STATIC
         src/Engine.cpp
         src/Window.cpp
         src/Renderer.cpp
@@ -17,23 +18,17 @@ add_library(engine
         src/Entity.cpp
 )
 
-target_include_directories(engine
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-        PUBLIC ${GLM_INCLUDE_DIR}
+target_include_directories(engine PUBLIC
+        include
+        external/glm
+        external/glfw/include
+        external/glad/include
 )
 
-# === macOS-specific OpenGL linking ===
-if (APPLE)
-    find_library(OpenGL_LIBRARY OpenGL)
-    target_link_libraries(engine
-            PUBLIC glad
-            PUBLIC glfw
-            PUBLIC ${OpenGL_LIBRARY}
-    )
-else ()
-    # Fallback for Linux/Windows (if you ever port it later)
-    target_link_libraries(engine
-            PUBLIC glad
-            PUBLIC glfw
-    )
-endif ()
+# Link everything the engine needs
+target_link_libraries(engine
+        PUBLIC
+        glm
+        glfw
+        glad
+)

@@ -1,9 +1,4 @@
-add_executable(sandbox
-        src/main.cpp
-)
+add_executable(sandbox src/main.cpp)
 
+# Link against the engine library
 target_link_libraries(sandbox PRIVATE engine)
-
-target_include_directories(sandbox
-        PRIVATE ${CMAKE_SOURCE_DIR}/engine/include
-)

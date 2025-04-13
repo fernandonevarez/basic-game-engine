@@ -6,7 +6,7 @@ namespace engine {
     Entity::Entity()
         : position(0.0f), velocity(0.0f) {}
 
-    void Entity::update(float dt) {
+    void Entity::update(const float dt) {
         position += velocity * dt;
     }
 

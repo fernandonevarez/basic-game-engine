@@ -11,7 +11,7 @@
 #include <iostream>
 
 namespace engine {
-    Engine::Engine() {}
+    Engine::Engine() = default;
 
     Engine::~Engine() {
         delete m_window;
@@ -30,7 +30,7 @@ namespace engine {
         int frames = 0;
 
         while (!m_window->shouldClose()) {
-            m_window->pollEvents();
+            engine::Window::pollEvents();
 
             glm::vec2 direction = {0.0f, 0.0f};
 
@@ -39,8 +39,8 @@ namespace engine {
             if (Input::isKeyPressed(GLFW_KEY_A)) direction.x -= 1.0f;
             if (Input::isKeyPressed(GLFW_KEY_D)) direction.x += 1.0f;
 
-            if (glm::length(direction) > 0.0f)
-                direction = glm::normalize(direction);
+            if (length(direction) > 0.0f)
+                direction = normalize(direction);
 
             entities[0].velocity = direction * 100.0f;
 
@@ -50,12 +50,11 @@ namespace engine {
             }
 
             Renderer::clear();
-            Renderer::render();
+            Renderer::render(entities[0]);
             m_window->swapBuffers();
 
             frames++;
-            double currentTime = glfwGetTime();
-            if (currentTime - lastTime >= 1.0) {
+            if (const double currentTime = glfwGetTime(); currentTime - lastTime >= 1.0) {
                 std::string title = "Game Engine [FPS: " + std::to_string(frames) + "]";
                 glfwSetWindowTitle(m_window->getNativeWindow(), title.c_str());
                 frames = 0;

@@ -1,9 +1,12 @@
 #include "engine/Shader.h"
+
+#include <string>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
 namespace engine {
     Shader::Shader(const char *vertexSrc, const char *fragmentSrc) {
-        GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexSrc, nullptr);
         glCompileShader(vertexShader);
 
@@ -39,7 +42,12 @@ namespace engine {
         glUseProgram(m_programID);
     }
 
-    void Shader::unbind() const {
+    void Shader::unbind() {
         glUseProgram(0);
+    }
+
+    void Shader::setVec2(const std::string &name, const glm::vec2 &value) const {
+        const GLint location = glGetUniformLocation(m_programID, name.c_str());
+        glUniform2fv(location, 1, glm::value_ptr(value));
     }
 }
