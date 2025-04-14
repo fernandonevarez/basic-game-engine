@@ -2,7 +2,7 @@
 add_subdirectory(external/glm)
 
 # GLFW (comes with its own CMakeLists.txt)
-add_subdirectory(external/glfw)
+add_subdirectory(external/glfw EXCLUDE_FROM_ALL)
 
 # GLAD (we'll define it manually since it's just a C file)
 add_library(glad STATIC external/glad/src/glad.c)
